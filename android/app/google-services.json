@@ -1,0 +1,46 @@
+{
+  "project_info": {
+    "project_number": "1097205595439",
+    "project_id": "orderit-test-firebase",
+    "storage_bucket": "orderit-test-firebase.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1097205595439:android:d84c629c4ffc8ed648f5da",
+        "android_client_info": {
+          "package_name": "com.example.firebasedemo"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1097205595439-917gnb64lel4gk1nv5tnmf40bkp8go7u.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBKq7k0i6TM6R77R6kYEek0G7xk_X9uwKg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1097205595439-4q4o847m8atmkbgqo384cmej3ssf07fq.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "1097205595439-7unvggnrlha2c0hm8fck2cjcftm7n31g.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.trainfirebase"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
