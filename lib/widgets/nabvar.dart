@@ -1,4 +1,5 @@
-import 'package:firebase_ui_auth/firebase_ui_auth.dart';
+import 'package:firebasedemo/screens/authentification/signin/signin.dart';
+import 'package:firebasedemo/services/auth_service.dart';
 import 'package:flutter/material.dart';
 
 class NavBarCustom extends StatefulWidget implements PreferredSizeWidget {
@@ -21,9 +22,9 @@ class _NavBarCustomState extends State<NavBarCustom> {
         IconButton(
           icon: Icon(Icons.logout),
           onPressed: () {
-            FirebaseUIAuth.signOut(context: context);
+            AuthService.signOut();
             Navigator.pushReplacement(
-                context, MaterialPageRoute(builder: (context) => SignInScreen()));
+                context, MaterialPageRoute(builder: (context) => SigninScreen()));
           },
         ),
       ],

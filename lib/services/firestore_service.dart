@@ -3,6 +3,37 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 class FirestoreService{
+    Future<void> createRole(String role) async {
+        // get current user
+        User? user = FirebaseAuth.instance.currentUser;
+        // check if user is authenticated
+        if (user == null) {
+            throw Exception('User is not authenticated');
+        }
+        // get reference to the project
+
+        await FirebaseFirestore.instance
+            .collection('users')
+            .doc(user.uid).set({
+                'role': role,
+            });
+    }
+
+    // get role from users/userId
+    Future<String> getRole() async{
+        // get current user
+        User? user = FirebaseAuth.instance.currentUser;
+        // check if user is authenticated
+        if (user == null) {
+            throw Exception('User is not authenticated');
+        }
+        // get reference to the project
+        return FirebaseFirestore.instance
+            .collection('users')
+            .doc(user.uid).get().then((value) => value.data()!['role']);
+    }
+
+
     // function to create project into users/userId/projects/projectId
     Future<void> createProject(String projectName, String desc) async {
         // get current user

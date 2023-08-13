@@ -6,30 +6,18 @@ import 'package:firebase_auth/firebase_auth.dart'
     hide PhoneAuthProvider, EmailAuthProvider;
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_ui_auth/firebase_ui_auth.dart';
-import 'package:firebase_ui_localizations/firebase_ui_localizations.dart';
-/*
-import 'package:firebase_ui_oauth_apple/firebase_ui_oauth_apple.dart';
-*/
-/*
-import 'package:firebase_ui_oauth_facebook/firebase_ui_oauth_facebook.dart';
-*/
-import 'package:firebase_ui_oauth_google/firebase_ui_oauth_google.dart';
-import 'package:firebasedemo/screens/authentification/signin/config.dart';
-import 'package:firebasedemo/screens/authentification/signin/decorations.dart';
-import 'package:firebasedemo/screens/authentification/signin/email_verif.dart';
+import 'package:firebasedemo/screens/authentification/check_email/check_email.dart';
+
+
 import 'package:firebasedemo/screens/authentification/signin/signin.dart';
+import 'package:firebasedemo/screens/home/admin_screen.dart';
 import 'package:firebasedemo/screens/home/home_screen.dart';
-/*
-import 'package:firebase_ui_oauth_twitter/firebase_ui_oauth_twitter.dart';
-*/
-import 'package:flutter/foundation.dart';
+import 'package:firebasedemo/services/firestore_service.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_localizations/flutter_localizations.dart';
 
 
 import '../../../firebase_options.dart';
-import 'package:firebase_storage/firebase_storage.dart';
-import 'package:firebase_ui_storage/firebase_ui_storage.dart';
+
 
 
 enum DesignLib {
@@ -48,29 +36,6 @@ final brightness = ValueNotifier(Brightness.light);
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
-
-  FirebaseUIAuth.configureProviders([
-    EmailAuthProvider(),
-    emailLinkProviderConfig,
-    PhoneAuthProvider(),
-    GoogleProvider(clientId: GOOGLE_CLIENT_ID),
-    /*AppleProvider(),
-    FacebookProvider(clientId: FACEBOOK_CLIENT_ID),
-    TwitterProvider(.
-      apiKey: TWITTER_API_KEY,
-      apiSecretKey: TWITTER_API_SECRET_KEY,
-      redirectUri: TWITTER_REDIRECT_URI,
-    ),*/
-  ]);
-
-  final storage = FirebaseStorage.instance;
-/*
-  final config = FirebaseUIStorageConfiguration(storage: storage);
-*/
-
-/*
-  await FirebaseUIStorage.configure(config);
-*/
 
   runApp(
     MyApp()
@@ -106,7 +71,6 @@ class _MyAppState extends State<MyApp> {
         visualDensity: VisualDensity.standard,
         inputDecorationTheme: const InputDecorationTheme(
         border: OutlineInputBorder(),
-
     ),
     elevatedButtonTheme: ElevatedButtonThemeData(style: buttonStyle),
     textButtonTheme: TextButtonThemeData(style: buttonStyle),
@@ -116,28 +80,49 @@ class _MyAppState extends State<MyApp> {
       StreamBuilder<User?>(
         stream: FirebaseAuth.instance.authStateChanges(),
         builder: (context, snapshot) {
-          /*if (snapshot.hasData) {
-            return HomeScreen();
-          } else {
-            return SignInScreen();
-          }*/
           switch (snapshot.connectionState) {
-
-
-
-
             case ConnectionState.active:
               print('active');
               User? user = snapshot.data;
               if (user != null) {
-                return HomeScreen();
-              }
-              else if (user != null && user.emailVerified){
-                return EmailCheck();
+                if(user.emailVerified == false){
+                  return CheckEmailScreen();
+                }
+                else{
 
+                  return FutureBuilder(
+                    future: FirestoreService().getRole(),
+                    builder: (context, snapshot) {
+                      if(snapshot.hasData){
+                        if(snapshot.data == 'admin'){
+                          return AdminScreen();
+                        }else if (snapshot.data == 'user'){
+                          return HomeScreen();
+                        }
+                        else{
+                          return const Scaffold(
+                            body: Center(
+                              child: Text('Error'),
+                            ),
+                          );
+                        }
+                      }
+                      else{
+                        return const Scaffold(
+                          body: Center(
+                            child: CircularProgressIndicator(),
+                          ),
+                        );
+                      }
+                    },
+                  );
+/*
+                  return HomeScreen();
+*/
+                }
               }
               else {
-                return SignInScreen();
+                return SigninScreen();
               }
               break;
             default:

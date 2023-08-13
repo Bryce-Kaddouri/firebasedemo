@@ -70,31 +70,7 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                 ),
               ),
             ),
-            ListTile(
-              title: Row(
-                children: [
-                  Icon(Icons.person),
-                  SizedBox(
-                    width: 8,
-                  ),
-                  Text('Profile'),
-                ],
-              ),
-              onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => ProfileScreen(
-                      appBar: AppBar(
-                        centerTitle: true,
-                        title: Text('Profile'),
-                      ),
-                    ),
 
-                  ),
-                );
-              },
-            ),
             ListTile(
               title: Row(
                 children: [
